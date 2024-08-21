@@ -20,26 +20,18 @@ async function main(){
     await mongoose.connect(MDB_URL);
 };
 
-//EDIT
-app.put("/listings/:id",(req, res)=>{
-    let {id} = req.params;
-
-});
-
-
 //EDIT 
 app.get("/listings/:id/edit", async(req, res)=>{
 let {id} = req.params;
 const List = await Listings.findById(id);
 res.render("./listings/edit.ejs", {List});
 });
-
-//SHOW DETAILS
-app.get("/listings/:id", async(req, res)=>{
+//EDIT
+app.put("/listings/:id", async(req, res)=>{
     let {id} = req.params;
-    console.log(id);
-    const Listing = await Listings.findById(id); 
-    res.render("listings/show.ejs", { Listing });
+    await Listings.findByIdAndUpdate(id, {...req.body.List});
+    res.redirect(`/listings/${id}`);
+
 });
 
 //POST NEW
@@ -49,7 +41,7 @@ app.post("/listings", async(req, res)=>{
     let newListing = new Listings({                //schema bnvla hota tyachyat value taka ata ith je {var} bnvle na tyatun.
         title:title,
         description:description,
-        image:image,
+        image:image,                               //create ko id wale rout k upr likho coz voh '/new' ko as an id le leta hai n use search krta hai toh voh to milegi nhi to error deta hai 
         price:price,
         location:location,
         country:country
@@ -63,6 +55,14 @@ app.get("/listings/new", async(req, res)=>{
     res.render("./listings/create.ejs");
 });
 
+
+//SHOW DETAILS
+app.get("/listings/:id", async(req, res)=>{
+    let {id} = req.params;
+    console.log(id);
+    const Listing = await Listings.findById(id); 
+    res.render("listings/show.ejs", { Listing });
+});
 
 //ALL LISTINGS
 app.get("/listings", async(req,res)=>{
