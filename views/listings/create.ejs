@@ -1,21 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create New</title>
-</head>
+<% layout("./layouts/boilerplate") -%>
+
 <body>
     <h2>Create new listings here!</h2>
 
     <form action="/listings" method="post" >
-        <input type="text"  name="title" ><br><br>
+        <input type="text"  name="title" class="imp" ><br><br>
         <textarea name="descri" id="descri" rows="5" cols="30">describe here</textarea><br><br>
         <input type="text" placeholder="Image link/URL"><br><br>
-        <input type="text" name="price" placeholder="enter price"><br><br>
+        <input type="text" name="price" placeholder="enter price" class="imp"><br><br>
         <input type="text" name="loc" placeholder="enter location"><br><br>
-        <input type="text" name="country" placeholder="enter country"><br><br>
+        <input type="text" name="country" placeholder="enter country" class="imp"><br><br>
         <button>Add</button>
     </form>
+
+    <script src = "./public/validation.js"></script>
+
 </body>
-</html>

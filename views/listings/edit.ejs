@@ -1,21 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wanderlust</title>
-</head>
+<% layout("./layouts/boilerplate") -%>
 <body>
     <h3>Edit your Listing here</h3>
     <form action="/listings/<%= List._id%>?_method=PUT" method="POST">
-        <input type="text"  name="name" value="<%= List.title %>"> <br><br>
-        <textarea name="eddescri" id="eddescri"  name = "description" rows="5" cols="40" value="<%= List.description %>"><%= List.description %> </textarea> <br><br>
-        <input type="text" name="image"  value="<%= List.image %>"> <br><br>
-        <input type="number"  name="price" value = "<%= List.price %>" > <br><br>
-        <input type="text"  name="location" value="<%= List.location %>"> <br><br>
-        <input type="text"  name="country" value="<%= List.country %>"> <br><br>
+        <!-- List[title] madhe title madhe jaun ti val title la set zali pahije. -->
+        <input type="text"  name="List[title]" value="<%= List.title %>"> <br><br>  
+        <textarea id="eddescri"  name = "List[description]" rows="5" cols="40" value="<%= List.description %>"><%= List.description %> </textarea> <br><br>
+        <input type="text" name="List[image]"  value="<%= List.image %>"> <br><br>
+        <input type="number"  name="List[price]" value = "<%= List.price %>" > <br><br>
+        <input type="text"  name="List[location]" value="<%= List.location %>"> <br><br>
+        <input type="text"  name="List[country]" value="<%= List.country %>"> <br><br>
         <button>Edit</button>
     </form>
  
 </body>
-</html>

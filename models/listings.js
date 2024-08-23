@@ -9,9 +9,13 @@ const listSchema = Schema({
     description:{
         type:String,
     },
-    image:{
-        filename:String,
-        url:String,
+    image: {
+        filename: String,
+        url: {
+            type: String,
+            default: "https://images.pexels.com/photos/17644421/pexels-photo-17644421/free-photo-of-seagulls-flying-on-sea-shore.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+            set: (v) => v === "" ? "https://images.pexels.com/photos/17644421/pexels-photo-17644421/free-photo-of-seagulls-flying-on-sea-shore.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" : v,
+        }
     },
     price:{
         type:Number,

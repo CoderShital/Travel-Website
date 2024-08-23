@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const Listings = require("./models/listings");
 const path = require("path");
 const methodOverride = require("method-override");  // so that we can use put and delete request in http verbs
+const ejsMate = require("ejs-mate");
 
 
 let port = 3000;
@@ -11,6 +12,7 @@ let MDB_URL = "mongodb://127.0.0.1:27017/airbnb";
 
 app.set("views" ,path.join(__dirname, "views"));
 app.set("view engine", "ejs");
+app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({extended:true}));
 app.use(methodOverride("_method"));
@@ -19,6 +21,14 @@ main().then((res)=>{console.log("connected to database.");}).catch((err)=>{conso
 async function main(){
     await mongoose.connect(MDB_URL);
 };
+//DELETE
+app.delete("/listings/:id",async(req, res)=>{
+    let {id} = req.params;
+    let deleted = await Listings.findByIdAndDelete(id);
+    console.log(deleted);
+    res.redirect("/listings");
+})
+
 
 //EDIT 
 app.get("/listings/:id/edit", async(req, res)=>{
@@ -27,9 +37,9 @@ const List = await Listings.findById(id);
 res.render("./listings/edit.ejs", {List});
 });
 //EDIT
-app.put("/listings/:id", async(req, res)=>{
+app.put("/listings/:id", async(req, res)=>{ //id ek rout parameter hai yaha jiska var create krna pdega and req.params se URL se usko extract kr lenge.
     let {id} = req.params;
-    await Listings.findByIdAndUpdate(id, {...req.body.List});
+    await Listings.findByIdAndUpdate(id, {...req.body.List});   //deconstruct : objects ki multiple properties ko extract krna eksath
     res.redirect(`/listings/${id}`);
 
 });
@@ -59,7 +69,6 @@ app.get("/listings/new", async(req, res)=>{
 //SHOW DETAILS
 app.get("/listings/:id", async(req, res)=>{
     let {id} = req.params;
-    console.log(id);
     const Listing = await Listings.findById(id); 
     res.render("listings/show.ejs", { Listing });
 });
