@@ -1,15 +1,48 @@
 <% layout("./layouts/boilerplate") -%>
 <body>
-    <h3>Edit your Listing here</h3>
-    <form action="/listings/<%= List._id%>?_method=PUT" method="POST">
-        <!-- List[title] madhe title madhe jaun ti val title la set zali pahije. -->
-        <input type="text"  name="List[title]" value="<%= List.title %>"> <br><br>  
-        <textarea id="eddescri"  name = "List[description]" rows="5" cols="40" value="<%= List.description %>"><%= List.description %> </textarea> <br><br>
-        <input type="text" name="List[image]"  value="<%= List.image %>"> <br><br>
-        <input type="number"  name="List[price]" value = "<%= List.price %>" > <br><br>
-        <input type="text"  name="List[location]" value="<%= List.location %>"> <br><br>
-        <input type="text"  name="List[country]" value="<%= List.country %>"> <br><br>
-        <button>Edit</button>
-    </form>
+        <div class="row mt-3">
+            <div class="col-8 offset-2">
+                
+                <h3>Edit your Listing here</h3>
+                <form action="/listings/<%= List._id%>?_method=PUT" method="POST">
+                    <!-- List[title] madhe title madhe jaun ti val title la set zali pahije. -->
+            
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text"  name="List[title]" value="<%= List.title %>" class="form-control">  
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="eddescri" class="form-label">Description</label>
+                        <textarea id="eddescri"  name = "List[description]" rows="5" cols="40" value="<%= List.description %>" class="form-control"><%= List.description %> </textarea> 
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="img" class="form-label">Image</label>
+                        <input type="text" name="List[image]"  value="<%= List.image %>" class="form-control"> 
+
+                    </div>
+                    <div class="row">
+                        <div class="mb-3 col-md-4">
+                            <label for="price" class="form-label">Price</label>
+                            <input type="number"  name="List[price]" value = "<%= List.price %>" class="form-control">
+    
+                        </div>
+                        <div class="mb-3 col-md-8">
+                            <label for="loc" class="form-label">Location</label>
+                            <input type="text"  name="List[location]" value="<%= List.location %>" class="form-control"> 
+    
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="country" class="form-label">Country</label>
+                        <input type="text"  name="List[country]" value="<%= List.country %>" class="form-control"> 
+
+                    </div>
+                    <button class="btn btn-dark e-btn mt-3">Edit</button>
+                </form>
+            </div>
+        </div>
+     
  
 </body>

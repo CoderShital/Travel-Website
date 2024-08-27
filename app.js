@@ -62,7 +62,8 @@ app.post("/listings", async(req, res)=>{
 
 //CREATE NEW 
 app.get("/listings/new", async(req, res)=>{
-    res.render("./listings/create.ejs");
+    let list = await Listings.findById({});
+    res.render("./listings/create.ejs", {list});
 });
 
 

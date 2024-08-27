@@ -1,17 +1,61 @@
 <% layout("./layouts/boilerplate") -%>
 
 <body>
-    <h2>Create new listings here!</h2>
+    <div class="row">
+        <div class="col-8 offset-2">
+            <br><br>
+            <h2>Create new listings here!</h2>
+            <br>
+            <form action="/listings" method="post" >
 
-    <form action="/listings" method="post" >
-        <input type="text"  name="title" class="imp" ><br><br>
-        <textarea name="descri" id="descri" rows="5" cols="30">describe here</textarea><br><br>
-        <input type="text" placeholder="Image link/URL"><br><br>
-        <input type="text" name="price" placeholder="enter price" class="imp"><br><br>
-        <input type="text" name="loc" placeholder="enter location"><br><br>
-        <input type="text" name="country" placeholder="enter country" class="imp"><br><br>
-        <button>Add</button>
-    </form>
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input  type="text"  
+                        name="list[title]" 
+                        class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="descri" class="form-label">Description</label>
+                <textarea name="list[description]"
+                        id="descri" rows="5" cols="30" 
+                        class="form-control">describe here</textarea>
+            </div>
+            <div class="mb-3">
+                <label for="img" class="form-label">Image Link</label>
+                <input type="text"
+                        name = "list[image]" 
+                        placeholder="Image link/URL" 
+                        class="form-control">
+            </div>
+            <div class="row">
+                <div class="mb-3 col-md-4" >
+                    <label for="price" class="form-label">Price</label>
+                    <input type="text" 
+                            name="list[price]"    
+                            placeholder="enter price"    
+                            class="form-control">
+                </div>
+                <div class="mb-3 col-md-8">
+                    <label for="loc" class="form-label loc">Location</label>
+                    <input type="text"      
+                        name="list[location]"   
+                        placeholder="enter location"   
+                        class="form-control loc">
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="country" class="form-label">country</label>
+                <input type="text"   
+                    name="list[country]"  
+                    placeholder="enter country"  
+                    class="form-control">
+            </div>
+
+                <button class="btn btn-dark a-btn">Add</button>
+                <br><br>
+            </form>
+        </div>
+    </div>
 
     <script src = "./public/validation.js"></script>
 

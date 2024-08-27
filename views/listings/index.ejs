@@ -6,18 +6,19 @@
     </form> -->
     <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
         <% for(list of allListings){ %>
-            <div class="card col" style="width: 18rem;">
-                <img src= <%=list.image %> class="card-img-top" alt="Image of place to visit">
-                <!-- <p><%=list.image %></p> -->
+            <a href="/listings/<%= list._id %>" class="list-link">
+            <div class="card col" >
+                <img src= <%=list.image.url %> class="card-img-top" alt="Image of place to visit" style="height:20rem">
+                <div class="card-img-overlay"></div>
                 <div class="card-body">
                   <p class="card-text">
-                    <%= list.title %>
+                    <b><%= list.title %></b>
                     <br>
                     &#8377; <%= list.price.toLocaleString("en-IN") %>
                 </p>
-                  <a href="#" class="btn btn-primary">Go somewhere</a>
                 </div>
               </div>
+            </a>
               
         <% } %>
 
@@ -26,13 +27,5 @@
     
 
 
-    <!-- <ul>
-        <% for(let list of allListings){ %>
-      
-            <li>
-                <a href="/listings/<%= list._id %>"><%= list.title %> </a>
-            </li>
-       
-    <% } %>
-    </ul> -->
+    
 </body>

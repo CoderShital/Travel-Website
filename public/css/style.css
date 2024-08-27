@@ -1,3 +1,13 @@
+body{
+    /* margin-left: 20px !important; */
+    font-family: "Plus Jakarta Sans", sans-serif !important;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.container{
+    flex: 1;
+}
 .navbar{
     height: 5 rem;
     background-color: white;
@@ -10,6 +20,10 @@
 
 .nav-link{
     color:#222222 !important;
+}
+
+.list-link{
+    text-decoration: none;
 }
 
 .foot-links a{
@@ -43,8 +57,60 @@
     text-align: center;
 }
 
+.card{
+    border: none !important;
+    margin-bottom:2rem !important;
 
+}
 
+.card-img-top{
+    border-radius:1rem !important;
+    width: 100% !important;
+    object-fit: cover !important;
 
+}
 
+.card-body{
+    padding:0 !important;
+}
 
+.card-text{
+    font-weight: 400 !important;
+}
+
+.card-img-overlay{
+    opacity: 0;
+}
+.card-img-overlay:hover{
+    opacity: 0.2;
+    background-color: aliceblue;
+}
+
+/* Create_new page */
+.a-btn{
+    background-color:#fe424d !important;
+    border: none !important;
+}
+/* edit page */
+.e-btn{
+    background-color:#fe424d !important;
+    border: none !important;
+}
+/* show page */
+.show-img{
+    height:30vh;
+}
+.btns{
+    display:flex;
+}
+.show-card{
+    padding-left: 0;
+    padding-right:0;
+}
+/* .sam{
+    display: flex;
+}
+vanila css ni style kel hot rather than bootstrap
+.loc{
+    margin-left: 4rem;
+} */
