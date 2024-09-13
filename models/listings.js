@@ -8,6 +8,7 @@ const listSchema = Schema({
     },
     description:{
         type:String,
+        required: true,
     },
     image: {
         filename: String,
@@ -23,6 +24,7 @@ const listSchema = Schema({
     },
     location:{
         type:String,
+        required: true
     },
     country:{
         type:String,

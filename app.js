@@ -31,10 +31,24 @@ app.delete("/listings/:id",async(req, res)=>{
 
 
 //EDIT 
-app.get("/listings/:id/edit", async(req, res)=>{
-let {id} = req.params;
-const List = await Listings.findById(id);
-res.render("./listings/edit.ejs", {List});
+// app.get("/listings/:id/edit", async(req, res)=>{
+// let {id} = req.params;
+// const List = await Listings.findById(id);
+// res.render("./listings/edit.ejs", {List});
+// });
+app.get("/listings/:id/edit", async (req, res) => {
+    const { id } = req.params;
+    try {
+        let List = await Listings.findById(id);
+        if (!List) {
+            // Handle the case where the listing is not found
+            return res.redirect("/listings");
+        }
+        res.render("./listings/edit.ejs", { List });
+    } catch (err) {
+        console.error(err);
+        res.redirect("/listings");
+    }
 });
 //EDIT
 app.put("/listings/:id", async(req, res)=>{ //id ek rout parameter hai yaha jiska var create krna pdega and req.params se URL se usko extract kr lenge.
@@ -62,7 +76,7 @@ app.post("/listings", async(req, res)=>{
 
 //CREATE NEW 
 app.get("/listings/new", async(req, res)=>{
-    let list = await Listings.findById({});
+    let list = await Listings.find();
     res.render("./listings/create.ejs", {list});
 });
 
