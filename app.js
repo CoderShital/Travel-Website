@@ -5,6 +5,7 @@ const Listings = require("./models/listings");
 const path = require("path");
 const methodOverride = require("method-override");  // so that we can use put and delete request in http verbs
 const ejsMate = require("ejs-mate");
+const bodyParser = require("body-parser");
 
 
 let port = 3000;
@@ -16,6 +17,7 @@ app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({extended:true}));
 app.use(methodOverride("_method"));
+app.use(bodyParser.urlencoded({extended: true}));
 
 main().then((res)=>{console.log("connected to database.");}).catch((err)=>{console.log(err);});
 async function main(){
@@ -60,19 +62,25 @@ app.put("/listings/:id", async(req, res)=>{ //id ek rout parameter hai yaha jisk
 
 //POST NEW
 app.post("/listings", async(req, res)=>{
-    let {title, description, image, price, location, country} = req.body;   //extract data from inputs
-    console.log(title);
-    let newListing = new Listings({                //schema bnvla hota tyachyat value taka ata ith je {var} bnvle na tyatun.
-        title:title,
-        description:description,
-        image:image,                               //create ko id wale rout k upr likho coz voh '/new' ko as an id le leta hai n use search krta hai toh voh to milegi nhi to error deta hai 
-        price:price,
-        location:location,
-        country:country
-    })
+    let newListing = new Listings(req.body.list);
     await newListing.save()
+    //console.log(req.body);  This will print the form data entered by user.
     res.redirect("/listings");
 });
+// app.post("/listings", async(req, res)=>{
+//     let {title, description, image, price, location, country} = req.body;   //extract data from inputs
+//     console.log(title);
+//     let newListing = new Listings({                //schema bnvla hota tyachyat value taka ata ith je {var} bnvle na tyatun.
+//         title:title,
+//         description:description,
+//         image:image,                               //create ko id wale rout k upr likho coz voh '/new' ko as an id le leta hai n use search krta hai toh voh to milegi nhi to error deta hai 
+//         price:price,
+//         location:location,
+//         country:country
+//     })
+//     await newListing.save()
+//     res.redirect("/listings");
+// });
 
 //CREATE NEW 
 app.get("/listings/new", async(req, res)=>{

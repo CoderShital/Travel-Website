@@ -6,20 +6,21 @@
             <br><br>
             <h2>Create new listings here!</h2>
             <br>
-            <form action="/listings" method="post" >
+            <form action="/listings" method="post" novalidate class="needs-validation">
 
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
                 <input  type="text"  
                         name="list[title]" 
                         value="<%= list.title %>"
-                        class="form-control">
+                        class="form-control"
+                        required>
             </div>
             <div class="mb-3">
                 <label for="descri" class="form-label">Description</label>
                 <textarea name="list[description]"
                         id="descri" rows="5" cols="30" 
-                        class="form-control">describe here</textarea>
+                        class="form-control" required></textarea>
             </div>
             <div class="mb-3">
                 <label for="img" class="form-label">Image Link</label>
@@ -34,14 +35,16 @@
                     <input type="text" 
                             name="list[price]"    
                             placeholder="enter price"    
-                            class="form-control">
+                            class="form-control"
+                            required>
                 </div>
                 <div class="mb-3 col-md-8">
                     <label for="loc" class="form-label loc">Location</label>
                     <input type="text"      
                         name="list[location]"   
                         placeholder="enter location"   
-                        class="form-control loc">
+                        class="form-control loc"
+                        required>
                 </div>
             </div>
             <div class="mb-3">
@@ -49,7 +52,8 @@
                 <input type="text"   
                     name="list[country]"  
                     placeholder="enter country"  
-                    class="form-control">
+                    class="form-control"
+                    required>
             </div>
 
                 <button class="btn btn-dark a-btn">Add</button>
@@ -57,7 +61,4 @@
             </form>
         </div>
     </div>
-
-    <script src = "./public/validation.js"></script>
-
 </body>
