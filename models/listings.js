@@ -1,15 +1,15 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const listSchema = Schema({
+const listSchema = new Schema({
     title:{
         type:String,
-        required: true,
-    },
+        required: true
+        },
     description:{
         type:String,
-        required: true,
-    },
+        required: true 
+        },
     image: {
         filename: String,
         url: {
@@ -20,16 +20,16 @@ const listSchema = Schema({
     },
     price:{
         type:Number,
-        required:true
-    },
+        required: true  
+        },
     location:{
         type:String,
         required: true
-    },
+        },
     country:{
         type:String,
-        required:true,
-    }
+        required: true 
+         }
 });
 
 const Listings = new mongoose.model("Listing", listSchema);
