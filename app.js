@@ -9,6 +9,7 @@ const bodyParser = require("body-parser");
 const wrapAsync = require("./utils/wrapAsync");
 const ExpressError = require("./utils/ExpressError");
 const {listSchema} = require("./schema");
+const Review = require("./models/review");
 
 let port = 3000;
 let MDB_URL = "mongodb://127.0.0.1:27017/airbnb";
@@ -35,6 +36,20 @@ const validateListing = (req, res, next) =>{
         next();
     }
 };
+
+
+//Review
+app.post("/listings/:id/reviews", async(req, res)=>{
+    let listing = await Listings.findById(req.params.id);
+    let newReview = new Review(req.body.review);
+    listing.reviews.push(newReview);
+
+    await new Listings.save();
+    await new newReview.save();
+
+    console.log("new review send");
+    res.send("New review send");
+});
 
 //DELETE
 app.delete("/listings/:id", wrapAsync(async(req, res)=>{
@@ -96,8 +111,9 @@ app.get("/listings", wrapAsync(async(req,res)=>{
 }));
 //HOME
 app.get("/", (req, res)=>{
-    let msg = "WELCOME TO HOME PAGE.\nTHIS IS A ROOT." 
-    res.send(msg);
+    //let msg = "WELCOME TO HOME PAGE.\nTHIS IS A ROOT." 
+    //res.send(msg);
+    res.render("./listings/Home.ejs");
 });
 
 
