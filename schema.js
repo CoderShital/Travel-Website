@@ -1,4 +1,5 @@
 const Joi = require("joi");
+const review = require("./models/review");
 module.exports.listSchema = Joi.object({
     list : Joi.object({
         title: Joi.string().required(),
@@ -22,3 +23,11 @@ module.exports.listSchema = Joi.object({
 
 // validateListing function apn yala middleware chya form madhe convert krnyasathi banvav lagt jenekrun he pratyek rout sathi aplyala use krta yeil.
 // as a middleware apn mg pass krnar rout create krtanna. mg saglyanna apply krta yeil validation.
+
+module.exports.reviewSchema = Joi.object({
+    review : Joi.object({
+        ratings:Joi.number().required().min(1).max(5),
+        comment:Joi.string().required(),
+
+    }).required()
+});

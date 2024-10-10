@@ -14,4 +14,4 @@ const reviewSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model("Review", reviewSchema);
+module.exports = mongoose.model("Review", reviewSchema);   //schema banaya & model bhi toh banana hoga toh voh banake export kiya
