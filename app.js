@@ -1,15 +1,16 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const Listings = require("./models/listings");
 const path = require("path");
 const methodOverride = require("method-override");  // so that we can use put and delete request in http verbs
 const ejsMate = require("ejs-mate");
 const bodyParser = require("body-parser");
-const wrapAsync = require("./utils/wrapAsync");
 const ExpressError = require("./utils/ExpressError");
-const {listSchema, reviewSchema} = require("./schema");
-const Review = require("./models/review");
+const Listings = require("./models/listings");
+
+
+const listing = require("./routs/listing");
+const reviews = require("./routs/reviews");
 
 let port = 3000;
 let MDB_URL = "mongodb://127.0.0.1:27017/airbnb";
@@ -22,110 +23,16 @@ app.use(express.urlencoded({extended:true}));
 app.use(methodOverride("_method"));
 app.use(bodyParser.urlencoded({extended: true}));
 
+
 main().then((res)=>{console.log("connected to database.");}).catch((err)=>{console.log(err);});
 async function main(){
     await mongoose.connect(MDB_URL);
 };
 
-const validateListing = (req, res, next) =>{
-    let {error} = listSchema.validate(req.body);
-    if(error){
-        let errMsg = error.details.map((el)=> el.message).join(",");
-        throw new ExpressError(400, error);
-    }else{
-        next();
-    }
-};
-const validateReview = (req, res, next) =>{
-    let {error} = reviewSchema.validate(req.body);
-    if(error){
-        let errMsg = error.details.map((el)=> el.message).join(",");
-        throw new ExpressError(400, error);
-    }else{
-        next();
-    }
-};
+app.use("/listings", listing);
+app.use("/listings/:id/reviews", reviews);
 
 
-//Post Review
-app.post("/listings/:id/reviews", validateReview, wrapAsync(async(req, res)=>{
-    let listing = await Listings.findById(req.params.id);
-    let newReview = new Review(req.body.review); //review => review object ee form madhe name madhe pass kelel.
-    listing.reviews.push(newReview); //reviews => array -- listing ali- reviews cha array pn sobt ala--tyat new_listing taka. 
-
-        await newReview.save();
-        await listing.save();
-
-   // console.log("new review send");
-    res.redirect(`/listings/${listing._id}`);
-}));
-//Delete Review
-app.delete("/listings/:id/reviews/:reviewId", wrapAsync(async(req, res)=>{
-    let{id, reviewId} = req.params;
-
-    await Listings.findByIdAndUpdate(id, {$pull: {reviews: reviewId}});
-    await Review.findByIdAndDelete(reviewId); 
-    res.redirect(`/listings/${id}`);
-}))
-
-//DELETE
-app.delete("/listings/:id", wrapAsync(async(req, res)=>{
-    let {id} = req.params;
-    let deleted = await Listings.findByIdAndDelete(id);
-    console.log(deleted);
-    res.redirect("/listings");
-}));
-
-app.get("/listings/:id/edit", wrapAsync(async (req, res) => {
-    const { id } = req.params;
-    try {
-        let List = await Listings.findById(id);
-        if (!List) {
-            // Handle the case where the listing is not found
-            return res.redirect("/listings");
-        }
-        res.render("./listings/edit.ejs", { List });
-    } catch (err) {
-        console.error(err);
-        res.redirect("/listings");
-    }
-}));
-//EDIT
-app.put("/listings/:id",validateListing,wrapAsync(async(req, res)=>{ //id ek rout parameter hai yaha jiska var create krna pdega and req.params se URL se usko extract kr lenge.
-    // if(!req.body.list){
-    //     throw new ExpressError(400, "Send valid data for listing.");
-    // };
-    let {id} = req.params;
-    await Listings.findByIdAndUpdate(id, {...req.body.List});   //deconstruct : objects ki multiple properties ko extract krna eksath
-    res.redirect(`/listings/${id}`);
-
-}));
-//POST NEW
-app.post("/listings",validateListing, wrapAsync(async(req, res, next)=>{
-    const newListing = new Listings(req.body.list);
-    await newListing.save();
-    console.log(req.body);  //This will print the form data entered by user.
-    res.redirect("/listings");
-    })
-);
-//CREATE NEW 
-app.get("/listings/new", wrapAsync(async(req, res)=>{
-    let list = await Listings.find();
-    res.render("./listings/create.ejs", {list});
-}));
-//SHOW DETAILS
-app.get("/listings/:id", wrapAsync(async(req, res)=>{
-    let {id} = req.params;
-    const Listing = await Listings.findById(id).populate("reviews"); 
-    res.render("listings/show.ejs", { Listing });
-}));
-
-//ALL LISTINGS
-app.get("/listings", wrapAsync(async(req,res)=>{
-    let allListings = await Listings.find({});
-    //console.log(allListings);
-    res.render("./listings/index.ejs",{allListings});
-}));
 //HOME
 app.get("/", (req, res)=>{
     //let msg = "WELCOME TO HOME PAGE.\nTHIS IS A ROOT." 
