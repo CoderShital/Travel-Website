@@ -1,6 +1,6 @@
 const express = require("express");
 const Router = express.Router();
-const {listSchema, reviewSchema} = require("../schema");
+const {listSchema} = require("../schema");
 const ExpressError = require("../utils/ExpressError");
 const Listings = require("../models/listings");
 const wrapAsync = require("../utils/wrapAsync");
@@ -50,16 +50,17 @@ Router.get("/:id/edit", wrapAsync(async (req, res) => {
 
 //POST NEW
 Router.post("/",validateListing, wrapAsync(async(req, res, next)=>{
-    const newListing = new Listings(req.body.list);
+    const newListing = new Listings(req.body.List);
     await newListing.save();
     console.log(req.body);  //This will print the form data entered by user.
+    req.flash("success", "New Listing is added");
     res.redirect("/listings");
     })
 );
 //CREATE NEW 
 Router.get("/new", wrapAsync(async(req, res)=>{
-    let list = await Listings.find();
-    res.render("./listings/create.ejs", {list});
+    let List = await Listings.find();
+    res.render("./listings/create.ejs", {List});
 }));
 //SHOW DETAILS
 Router.get("/:id", wrapAsync(async(req, res)=>{

@@ -7,6 +7,9 @@ const ejsMate = require("ejs-mate");
 const bodyParser = require("body-parser");
 const ExpressError = require("./utils/ExpressError");
 const Listings = require("./models/listings");
+const session = require("express-session");
+const flash = require("connect-flash");
+
 
 
 const listing = require("./routs/listing");
@@ -14,6 +17,11 @@ const reviews = require("./routs/reviews");
 
 let port = 3000;
 let MDB_URL = "mongodb://127.0.0.1:27017/airbnb";
+
+main().then((res)=>{console.log("connected to database.");}).catch((err)=>{console.log(err);});
+async function main(){
+    await mongoose.connect(MDB_URL);
+};
 
 app.set("views" ,path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -24,10 +32,24 @@ app.use(methodOverride("_method"));
 app.use(bodyParser.urlencoded({extended: true}));
 
 
-main().then((res)=>{console.log("connected to database.");}).catch((err)=>{console.log(err);});
-async function main(){
-    await mongoose.connect(MDB_URL);
-};
+const sessionOptions = {
+    secret: "mysecretecode",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        expires: Date.now() + 7*24*60*60*100,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        httpOnly: true
+    }
+}
+app.use(session(sessionOptions));
+app.use(flash());     //flash jya routes sathi vaprtoy tyachya adhich defined or used kel pahije.
+
+app.use((req, res, next)=>{
+    res.locals.success = req.flash("success");
+    next();
+})
+
 
 app.use("/listings", listing);
 app.use("/listings/:id/reviews", reviews);
