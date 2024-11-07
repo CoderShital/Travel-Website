@@ -20,6 +20,7 @@ Router.delete("/:id", wrapAsync(async(req, res)=>{
     let {id} = req.params;
     let deleted = await Listings.findByIdAndDelete(id);
     console.log(deleted);
+    req.flash("success", "The Listing is deleted!");
     res.redirect("/listings");
 }));
 //UPDATE
@@ -29,31 +30,29 @@ Router.put("/:id",validateListing,wrapAsync(async(req, res)=>{ //id ek rout para
     // };
     let {id} = req.params;
     await Listings.findByIdAndUpdate(id, {...req.body.List});   //deconstruct : objects ki multiple properties ko extract krna eksath
+    req.flash("success", "The Listing is Updated!");
     res.redirect(`/listings/${id}`);
 
 }));
 //EDIT
 Router.get("/:id/edit", wrapAsync(async (req, res) => {
     let { id } = req.params;
-    try {
-        const List = await Listings.findById(id);
-        if (!List) {
-            // Handle the case where the listing is not found
-             res.redirect("/listings");
+    const List = await Listings.findById(id);
+
+        if(!List){
+            req.flash("error", "The Listing you've requested for does not exits!");
+            res.redirect("/listings");
         }
         res.render("./listings/edit.ejs", { List });
-    } catch (err) {
-        console.error(err);
-        res.redirect("/listings");
     }
-}));
+));
 
 //POST NEW
 Router.post("/",validateListing, wrapAsync(async(req, res, next)=>{
     const newListing = new Listings(req.body.List);
     await newListing.save();
-    console.log(req.body);  //This will print the form data entered by user.
-    req.flash("success", "New Listing is added");
+   // console.log(req.body);  //This will print the form data entered by user.
+    req.flash("success", "New Listing is added!");
     res.redirect("/listings");
     })
 );
@@ -66,6 +65,10 @@ Router.get("/new", wrapAsync(async(req, res)=>{
 Router.get("/:id", wrapAsync(async(req, res)=>{
     let {id} = req.params;
     const Listing = await Listings.findById(id).populate("reviews"); 
+    if(!Listing){
+        req.flash("error", "The Listing you've requested for does not exits!");
+        res.redirect("/listings");
+    }
     res.render("listings/show.ejs", { Listing });
 }));
 //ALL LISTINGS
