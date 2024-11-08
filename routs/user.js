@@ -1,5 +1,6 @@
 const express = require("express");
 const Router = express.Router();
+const User = require("../models/user");
 
 Router.get("/", (req, res)=>{
     res.render("users/signup.ejs");
