@@ -17,13 +17,7 @@ const User = require("./models/user");
 
 const listing = require("./routs/listing");
 const reviews = require("./routs/reviews");
-
-app.use(passport.initialize())
-app.use(passport.session());
-passport.use(new LocalStratergy(User.authenticate));
-
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+const user = require("./routs/user");
 
 let port = 3000;
 let MDB_URL = "mongodb://127.0.0.1:27017/airbnb";
@@ -55,6 +49,12 @@ const sessionOptions = {
 app.use(session(sessionOptions));
 app.use(flash());     //flash jya routes sathi vaprtoy tyachya adhich defined or used kel pahije.
 
+app.use(passport.initialize())
+app.use(passport.session());
+passport.use(new LocalStratergy(User.authenticate));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 app.use((req, res, next)=>{
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
@@ -63,16 +63,17 @@ app.use((req, res, next)=>{
 })
 
 
-app.get("/demouser", async(req, res)=>{
-    let fakeUser = new User({
-        email: "abc@gmail.com",
-        username: "myName"
-    });
-    let registeredUser = await User.register(fakeUser, "hello");
-    res.send(registeredUser);
-});
+// app.get("/demo", async(req, res)=>{
+//     let fakeUser = new User({
+//         email: "abc@gmail.com",
+//         username: "Joy"
+//     });
+//     let registeredUser = await User.register(fakeUser, "hello");
+//     res.send(registeredUser);
+// });
 app.use("/listings", listing);
 app.use("/listings/:id/reviews", reviews);
+app.use("/signup", user);
 
 
 //HOME
