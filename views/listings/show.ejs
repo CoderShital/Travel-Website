@@ -8,23 +8,23 @@
         <div class="card" style="width: 35rem;">
             <img src="<%= Listing.image.url %>" class="card-img-top show-img" alt="listing_image">
             <div class="card-body">
-                
-                <%= Listing.description %> <br>
-                &#8377;<%= Listing.price.toLocaleString("en-IN") %> <br>
-                <%= Listing.location %> <br>
-                <%= Listing.country %> 
+                <p>Owned by <i><%= Listing.owner.username %></i></p>
+                <p><%= Listing.description %></p>
+                <p>&#8377;<%= Listing.price.toLocaleString("en-IN") %></p>
+                <p><%= Listing.location %></p>
+                <p><%= Listing.country %></p> 
 
             </div>
           </div>
     </div>
-   
-    <div class="btns">
+      <div class="btns">
         <a href="/listings/<%= Listing._id %>/edit"class="btn btn-dark col-1 offset-3 e-btn"> Edit</a>
     
         <form action="/listings/<%= Listing._id %>?_method=DELETE" method="post"> 
             <button class="btn btn-dark offset-2">Delete</button>
         </form>
     </div>
+  
     
 </div>
 

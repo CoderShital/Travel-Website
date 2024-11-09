@@ -51,14 +51,14 @@ app.use(flash());     //flash jya routes sathi vaprtoy tyachya adhich defined or
 
 app.use(passport.initialize())
 app.use(passport.session());
-passport.use(new LocalStratergy(User.authenticate));
+passport.use(new LocalStratergy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next)=>{
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
-
+    res.locals.currUser = req.user;  //bcoz we can't access this user object directly in ejs template.
     next();
 })
 

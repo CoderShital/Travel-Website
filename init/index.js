@@ -11,6 +11,9 @@ async function main(){
 
 const initDB = async()=>{
     await Listings.deleteMany();    //model=collections=Listings----n tyavrch lagtat he sare fun.
+     initData.data = initData.data.map((obj)=>({...obj,
+        owner: "672df0f52d992b35111ac6ff"                //map function k through database ko reinitialized krke add kiya owner
+    }));
     await Listings.insertMany(initData.data);
     console.log("Database is initialised.");
 }
