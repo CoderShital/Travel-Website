@@ -7,20 +7,21 @@ const { saveRedirectUrl } = require("../middleware");
 
 const userController = require("../controllers/user");
 
-Router.get("/", userController.renderSignupForm);
+Router.route("/")
+      .get(userController.renderSignupForm)
+      .post( wrapAsync(userController.signup));
 
-Router.post("/", wrapAsync(userController.signup));
-
-Router.get("/login", userController.renderLoginForm);
-Router.post("/login",saveRedirectUrl,passport
-     .authenticate("local", 
-        { failureRedirect: '/signup/login', 
-          failureFlash:true
-        }),                  //actually login toh passport krva raha hai but still humne login naam de diya niche
-userController.login
-);
+Router.route("/login")
+      .get( userController.renderLoginForm)
+      .post(saveRedirectUrl,passport
+        .authenticate("local", 
+            { failureRedirect: '/signup/login', 
+            failureFlash:true
+            }),                  //actually login toh passport krva raha hai but still humne login naam de diya niche
+         userController.login
+        );
 
 Router.get("/logout",userController.logOut);
-
+ 
 
 module.exports = Router;

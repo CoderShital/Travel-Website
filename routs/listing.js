@@ -5,22 +5,30 @@ const wrapAsync = require("../utils/wrapAsync");
 const {isLoggedIn, isOwner, validateListing} = require("../middleware.js");
 const { populate } = require("../models/review.js");
 const listingContoller = require('../controllers/listing.js');
+const multer = require("multer");
+const upload = multer({dest:'uploads/'});
 
 
-//DELETE
-Router.delete("/:id", isLoggedIn, isOwner, wrapAsync(listingContoller.deleteListing));
-//UPDATE
-Router.put("/:id", isLoggedIn, isOwner, validateListing, wrapAsync(listingContoller.updateListing));
+
+
 //EDIT
 Router.get("/:id/edit", isLoggedIn, isOwner, wrapAsync(listingContoller.editListing));
-//POST NEW
-Router.post("/",validateListing, wrapAsync(listingContoller.postNew));
-//CREATE NEW 
+
+//CREATE NEW - ise id wale rout se upr rkho else new ko id ki tarah treat krne lgega and db mie dhundhne lagega milega nhi toh err .
 Router.get("/new", isLoggedIn, wrapAsync(listingContoller.newCreate));
-//SHOW DETAILS
-Router.get("/:id", wrapAsync(listingContoller.showListing));
-//ALL LISTINGS
-Router.get("/", wrapAsync(listingContoller.index));
+
+//SHOW DETAILS, UPDATE and DELETE
+Router.route("/:id").get(wrapAsync(listingContoller.showListing))
+      .put(isLoggedIn, isOwner, validateListing, wrapAsync(listingContoller.updateListing))
+      .delete(isLoggedIn, isOwner, wrapAsync(listingContoller.deleteListing));
+
+//ALL LISTINGS and POST NEW
+Router.route("/")
+      .get(wrapAsync(listingContoller.index))
+      // .post(isLoggedIn,validateListing, wrapAsync(listingContoller.postNew));
+      .post(upload.single('List[image]', (req, res)=>{
+            res.send(req.file);
+      }))
 
 
 module.exports = Router;

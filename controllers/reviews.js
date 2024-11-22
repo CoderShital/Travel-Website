@@ -1,6 +1,7 @@
 const Listings = require("../models/listings");
 const Review = require("../models/review");
 
+
 module.exports.postReview = async(req, res)=>{
     let listing = await Listings.findById(req.params.id);
     let newReview = new Review(req.body.review); //review => review object ee form madhe name madhe pass kelel.

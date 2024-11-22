@@ -6,10 +6,7 @@ const wrapAsync = require("../utils/wrapAsync");
 const ExpressError = require("../utils/ExpressError");
 const {validateReview, isLoggedIn, isReviewAuthor} = require("../middleware.js");
 
-const reviewController = require('../models/review.js');
-
-
-
+const reviewController = require('../controllers/reviews.js');
 
 //Post Review
 Router.post("/",isLoggedIn, validateReview, wrapAsync(reviewController.postReview));
