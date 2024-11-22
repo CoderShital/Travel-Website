@@ -17,21 +17,23 @@
             </div>
           </div>
     </div>
-      <div class="btns">
-        <a href="/listings/<%= Listing._id %>/edit"class="btn btn-dark col-1 offset-3 e-btn"> Edit</a>
-    
-        <form action="/listings/<%= Listing._id %>?_method=DELETE" method="post"> 
-            <button class="btn btn-dark offset-2">Delete</button>
-        </form>
-    </div>
-  
-    
+    <% if(currUser && currUser._id.equals(Listing.owner._id)){ %>
+        <div class="btns">
+            <a href="/listings/<%= Listing._id %>/edit"class="btn btn-dark col-1 offset-3 e-btn"> Edit</a>
+        
+            <form action="/listings/<%= Listing._id %>?_method=DELETE" method="post"> 
+                <button class="btn btn-dark offset-2">Delete</button>
+            </form>
+        </div>
+    <% } %>
+     
 </div>
 
 <div class="col-8 offset-3">
-    <hr>
-    <h3>Leave a review</h3>
-    <form action="/listings/<%= Listing._id %>/reviews" method="post" novalidate class="needs-validation">
+    <% if(currUser){ %>
+        <hr>
+        <h3>Leave a review</h3>
+        <form action="/listings/<%= Listing._id %>/reviews" method="post" novalidate class="needs-validation">
             <div class="mb-3 mt-3">
                 <label for="rate" class="form-label">Rating</label>
                 <input type="range" name="review[ratings]" id="rate" min="1" max="5" class="form-range">
@@ -50,12 +52,14 @@
            <button class="btn btn-outline-dark">Submit</button>
         </form>
         <hr>
+    <% } %>
+    
         <h3>All Reviews</h3>
         <div class="row">
             <% for(review of Listing.reviews){ %>
             <div class="card col-5 ms-3 mb-3">
                     <div class="card-body">
-                        <h5 class="card-title">John simon</h5>
+                        <h5 class="card-title"><%= review.author.username %></h5>
                         <p class="card-text"><%= review.comment %></p>
                         <p class="card-text"><%= review.ratings %> stars</p>
                     </div>
