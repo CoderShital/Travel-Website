@@ -4,7 +4,7 @@
             <div class="col-8 offset-2">
                 
                 <h3>Edit your Listing here</h3>
-                <form action="/listings/<%= List._id%>?_method=PUT" method="POST">
+                <form action="/listings/<%= List._id%>?_method=PUT" method="POST" enctype="multipart/form-data">
                     <!-- List[title] madhe title madhe jaun ti val title la set zali pahije. -->
             
                     <div class="mb-3">
@@ -17,9 +17,14 @@
                         <textarea id="eddescri"  name = "List[description]" rows="5" cols="40" value="<%= List.description %>" class="form-control"><%= List.description %> </textarea> 
 
                     </div>
+                    
                     <div class="mb-3">
-                        <label for="img" class="form-label">Image</label>
-                        <input type="text" name="List[image][url]" value="<%= List.image.url %>"  class="form-control"> 
+                        <label for="img" class="form-label">Original Image</label>
+                        <img src="<%= originalImageUrl %>" >
+                    </div>
+                    <div class="mb-3">
+                        <label for="img" class="form-label">Upload new Image</label>
+                        <input type="file" name="List[image]"   class="form-control"> 
 
                     </div>
                     <div class="row">
