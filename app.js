@@ -24,12 +24,12 @@ const reviews = require("./routs/reviews");
 const user = require("./routs/user");
 
 let port = 3000;
-let MDB_URL = "mongodb://127.0.0.1:27017/airbnb";
-// const ATLASDB = process.env.ATLASDB_URL;
+// let MDB_URL = "mongodb://127.0.0.1:27017/airbnb";
+const ATLASDB = process.env.ATLASDB_URL;
 main().then((res)=>{console.log("connected to database.");}).catch((err)=>{console.log(err);});
 async function main(){
     // console.log(ATLASDB);
-    await mongoose.connect(MDB_URL);
+    await mongoose.connect(ATLASDB);
 };
 
 app.set("views" ,path.join(__dirname, "views"));
