@@ -30,7 +30,7 @@ Router.route("/:id")
 Router.route("/")
       .get(wrapAsync(listingContoller.index))
       .post(isLoggedIn, upload.single('List[image]'),validateListing, wrapAsync(listingContoller.postNew));
-      
+       
 
 
 module.exports = Router;

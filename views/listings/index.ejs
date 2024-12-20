@@ -1,10 +1,162 @@
 <% layout('./layouts/boilerplate') -%>
+<style>
+    #filters{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+    .filter{
+        text-align: center;
+        margin-right: 2rem;
+        margin-top: 2rem;
+        opacity: 0.7;
+    }
+    .filter:hover{
+        opacity: 1;
+        cursor: pointer;
+    }
+    .tax-info{
+        display: none;
+    }
+    .tax-toggle{
+        border: 1px solid black;
+        border-radius: 1rem;
+        padding:1rem;
+        height: 3.25rem;
+        margin-left: 4rem;
+        display: flex;
+        align-items: center;
+    }
+    .see-more-btn {
+            display: none;
+            content: "See More";
+            display: block;
+            text-align: center;
+            background-color: #fe424d;
+            color: white;
+            padding: 10px;
+            border: 2px solid white;
+            border-radius: 0.7rem;
+            cursor: pointer;
+            margin-top: 5px;
+            width: 20%;
+        }
+    @media (max-width: 770px) {
+        #filters {
+            justify-content: center; 
+        }
+        .filter:nth-child(n+6) {
+            display: none;
+        }
+        #filters.expanded .filter:nth-child(n+6) {
+            display: block;
+        }
+        #filters.expanded .see-more-btn {
+            content: "See Less";
+        }
+        .tax-toggle {
+            margin-left: 0;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            margin-right: 1rem;
+            width: 75%;
+        }
+}
+
+@media (max-width: 1200px) {
+        #filters {
+            justify-content: center; 
+        }
+        .filter:nth-child(n+8) {
+            display: none;
+        }
+        #filters.expanded .filter:nth-child(n+8) {
+            display: block;
+        }
+        #filters.expanded .see-more-btn {
+            content: "See Less";
+        }
+        .tax-toggle {
+            margin-left: 0;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            margin-right: 1rem;
+            width: 70%;
+        }
+}
+@media (min-width: 1201px) {
+    .see-more-btn {
+        display: none; /* Hide the button */
+    }
+}
+@media(min-width:1201px) and (max-width:1400px){
+    .tax-toggle {
+            margin-left: 0;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            margin-right: 1rem;
+            width: 70%;
+        }
+}
+</style>
+
 <body>
-    <h3>All Listings</h3>
-    <!-- <form action="/listings/new" method="get">
-        <button>Create New Listing</button>
-    </form> -->
-    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
+    <div id="filters" >
+        <div class="filter">
+            <i class="fa-solid fa-fire"></i>
+            <p>Trending</p>
+        </div>
+        <div class="filter">
+            <i class="fa-solid fa-bed"></i>
+            <p>Room</p>
+        </div>
+        <div class="filter">
+            <i class="fa-solid fa-person-swimming"></i>
+            <p>Amazing pools</p>
+        </div>
+        <div class="filter">
+            <i class="fa-brands fa-fort-awesome-alt"></i>
+            <p>Castle</p>
+        </div>
+        <div class="filter">
+            <i class="fa-solid fa-tents"></i>
+            <p>Camping</p>
+        </div>
+        <div class="filter">
+            <i class="fa-solid fa-umbrella-beach"></i>
+            <p>Island </p>
+        </div>
+        <div class="filter">
+            <i class="fa-solid fa-mountain-city"></i>
+            <p>Iconic City</p>
+        </div>
+        <div class="filter">
+            <i class="fa-solid fa-mountain-sun"></i>
+            <p>Mountain Sun</p>
+        </div>
+        <div class="filter">
+            <i class="fa-solid fa-tractor"></i>
+            <p>Farm </p>
+        </div>
+        <div class="filter">
+            <i class="fa-regular fa-snowflake"></i>
+            <p>Arctic </p>
+        </div>
+        <div class="tax-toggle">
+            <div class="form-check-reverse form-switch">
+                <input  class="form-check-input" 
+                        type="checkbox" 
+                        role="switch" 
+                        id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Display total after taxes</label>
+            </div>
+        </div>
+        <button class="see-more-btn" id="seeMoreBtn">See More</button>
+
+       
+
+    </div>
+    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
         <% for(List of allListings){ %>
             <a href="/listings/<%= List._id %>" class="list-link">
             <div class="card col listing-card" >
@@ -14,7 +166,8 @@
                   <p class="card-text">
                     <b><%= List.title %></b>
                     <br>
-                    &#8377; <%= List.price.toLocaleString("en-IN") %> night
+                    &#8377; <%= List.price.toLocaleString("en-IN") %> night 
+                    <i class="tax-info"> &nbsp; &nbsp; +18% GST</i>
                 </p>
                 </div>
               </div>
@@ -25,7 +178,34 @@
     </div>
 
     
+<script>
+    let taxSwitch = document.getElementById("flexSwitchCheckDefault");
+    taxSwitch.addEventListener("click", ()=>{
+        let taxInfo = document.getElementsByClassName("tax-info");
+        for(info of taxInfo){
+            if(info.style.display != "inline"){
+                info.style.display = "inline";
+            }else{
+                info.style.display = "none";
+            }
+        }
+    });
 
+    document.getElementById('seeMoreBtn').addEventListener('click', function() {
+    const filtersContainer = document.getElementById('filters');
+    filtersContainer.classList.toggle('expanded');  // Toggle the 'expanded' class to show/hide additional filters
+
+    // Change the button text based on the state
+    const button = document.getElementById('seeMoreBtn');
+    if (filtersContainer.classList.contains('expanded')) {
+        button.textContent = 'See Less';
+    } else {
+        button.textContent = 'See More';
+    }
+});
+
+
+</script>
 
     
 </body>

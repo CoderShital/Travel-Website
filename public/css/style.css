@@ -118,3 +118,10 @@ vanila css ni style kel hot rather than bootstrap
 .loc{
     margin-left: 4rem;
 } */
+
+
+/* MAP */
+#map{
+    width: 400px;
+    height: 80vh;
+}

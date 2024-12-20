@@ -16,7 +16,7 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStratergy = require("passport-local");
 const User = require("./models/user");
-
+const Search = require("./models/search");
 
 
 const listing = require("./routs/listing");
@@ -25,9 +25,10 @@ const user = require("./routs/user");
 
 let port = 3000;
 let MDB_URL = "mongodb://127.0.0.1:27017/airbnb";
-
+// const ATLASDB = process.env.ATLASDB_URL;
 main().then((res)=>{console.log("connected to database.");}).catch((err)=>{console.log(err);});
 async function main(){
+    // console.log(ATLASDB);
     await mongoose.connect(MDB_URL);
 };
 
@@ -36,6 +37,7 @@ app.set("view engine", "ejs");
 app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({extended:true}));
+app.use(express.json());
 app.use(methodOverride("_method"));
 // app.use(bodyParser.urlencoded({extended: true}));
 
@@ -64,21 +66,28 @@ app.use((req, res, next)=>{
     res.locals.error = req.flash("error");
     res.locals.currUser = req.user;  //bcoz we can't access this user object directly in ejs template.
     next();
-})
-
-
-// app.get("/demo", async(req, res)=>{
-//     let fakeUser = new User({
-//         email: "abc@gmail.com",
-//         username: "Joy"
-//     });
-//     let registeredUser = await User.register(fakeUser, "hello");
-//     res.send(registeredUser);
-// });
+});
 app.use("/listings", listing);
 app.use("/listings/:id/reviews", reviews);
 app.use("/signup", user);
 
+app.get('/search', async (req, res) => {
+    try {
+      const query = req.query.query; // Capture the search query from the frontend
+      if (!query) {
+        return res.json({ message: 'No search term provided' });
+      }
+      // Perform a case-insensitive search on the 'title' field of the content collection
+      const results = await Listings.find({
+        country: { $regex: query, $options: 'i' }  // Case-insensitive search
+      });
+      // Return results as JSON
+      res.json(results);
+    } catch (error) {
+      console.error('Error fetching search results:', error);
+      res.status(500).json({ error: error.message });
+    }
+  });
 
 //HOME
 app.get("/", (req, res)=>{
@@ -86,6 +95,7 @@ app.get("/", (req, res)=>{
     //res.send(msg);
     res.render("./listings/Home.ejs");
 });
+
 
 
 app.all("*", (req,res,next)=>{
@@ -105,7 +115,14 @@ app.listen(port, ()=>{
 
 
 
-
+// app.get("/demo", async(req, res)=>{
+//     let fakeUser = new User({
+//         email: "abc@gmail.com",
+//         username: "Joy"
+//     });
+//     let registeredUser = await User.register(fakeUser, "hello");
+//     res.send(registeredUser);
+// });
 
 // app.post("/listings", async(req, res)=>{
 //     let {title, description, image, price, location, country} = req.body;   //extract data from inputs

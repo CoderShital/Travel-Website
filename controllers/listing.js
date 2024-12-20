@@ -27,8 +27,9 @@ module.exports.postNew = async(req, res, next)=>{
     const newListing = new Listings(req.body.List);
     newListing.owner = req.user._id;
     newListing.image = { url, filename };
+    console.log(url);
     await newListing.save();
-   // console.log(req.body);  //This will print the form data entered by user.
+    console.log(req.body);  //This will print the form data entered by user.
     req.flash("success", "New Listing is added!");
     res.redirect("/listings");
 };
@@ -41,8 +42,8 @@ module.exports.editListing = async (req, res) => {
             req.flash("error", "The Listing you've requested for does not exits!");
             res.redirect("/listings");
         }
-        let originalImageUrl = Listings.image.url;
-        originalImageUrl = originalImageUrl.replace("/uploads", "/uploads/h_300,w_250");
+        let originalImageUrl = List.image.url;
+        originalImageUrl = originalImageUrl.replace("/upload", "/upload/h_250,w_250");
         res.render("./listings/edit.ejs", { List, originalImageUrl });
 
 };
