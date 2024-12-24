@@ -125,7 +125,7 @@
       .then(response => response.json())
       .then(data => {
         const resultsContainer = document.getElementById('searchResults');
-        // OtherContent.style.display = 'none';
+        OtherContent.style.visibility = 'hidden';
         resultsContainer.innerHTML = ''; // Clear previous results
         
         if (data.length > 0) {
@@ -142,9 +142,10 @@
                                     </p>
                                   </div>`;
             resultsContainer.appendChild(resultDiv);
+
           });
         } else {
-          resultsContainer.innerHTML = '<p>No results found! Try another search.</p>'; 
+          resultsContainer.innerHTML = '<b><p>No results found! Try another search.</p></b>'; 
         }
       })
       .catch(error => console.error('Error fetching search results:', error));

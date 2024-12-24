@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const searchSchema = new Schema({
     search:{
-        type:String
+        type:String,
     }
 });
 

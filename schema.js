@@ -11,7 +11,8 @@ module.exports.listSchema = Joi.object({
         price: Joi.number().required().min(0),
         image: {
            url: Joi.string().allow("", null)
-        }
+        },
+        category: Joi.string().required()
     }).required()
 
 });
