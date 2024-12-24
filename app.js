@@ -102,13 +102,6 @@ app.get('/search', async (req, res) => {
   });
 
 //HOME
-app.get("/", (req, res)=>{
-    //let msg = "WELCOME TO HOME PAGE.\nTHIS IS A ROOT." 
-    //res.send(msg);
-    res.render("./listings/Home.ejs");
-});
-
-
 
 app.all("*", (req,res,next)=>{
     next(new ExpressError(404, "Page not found!"));
